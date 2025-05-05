@@ -1,8 +1,9 @@
 name: Build Binaries
 
 on:
-  release:
-    types: [published] 
+  push:
+    branches:
+      - stable
 
 jobs:
   build:

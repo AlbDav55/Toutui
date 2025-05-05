@@ -16,7 +16,7 @@ crossterm = "0.28.1"
 ratatui = "0.29.0"
 vlc-rc = "0.1.1"
 tui-textarea = "0.7.0"
-rusqlite = "0.33.0"
+rusqlite = { version = "0.33.0", features = ["bundled"] }
 regex = "1.11.1"
 log = "0.4.25"
 fern = "0.7.1"

@@ -284,12 +284,18 @@ install_config() {
     local prompt="Please provide a secret key to encrypt the token stored in the database ($env): "
     local key=
     until [[ -f "$env" && $(sed "s/TOUTUI_SECRET_KEY=//g" "$env") != "" ]]; do
-        read -sp "$prompt: " key
+        read -p "$prompt: " key
         if ! [[ $key == "" ]]; then echo "TOUTUI_SECRET_KEY=${key}" > "$env"; echo;fi
     done
 
     # config.
-    local example_config=config.example.toml
+     # create temp directory
+    local tmpdir
+    tmpdir=$(mktemp -d) # not supported in bash 3.2
+    # dl config.example.toml in temp directory
+    curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/main/config.example.toml -o "$tmpdir/config.toml"
+
+    local example_config="$tmpdir/config.toml"
     if ! [[ -f "$example_config" ]]; then
         echo "[ERROR] \"config.example.toml\" not found."
         exit $EXIT_CONFIG
@@ -300,8 +306,8 @@ install_config() {
         if [[ -f "$user_config" ]]; then
             # If maintainer decides adding options in "config.toml", we have to
             # update user's config file accordingly without breaking things up.
-	    # Here is an attempt. If you know of any way to simplify this, feel
-	    # free to PR <|:^)
+            # Here is an attempt. If you know of any way to simplify this, feel
+            # free to PR <|:^)
             local merged_config=
 
             # Grab sections from config.example.toml AND from user config (e.g. [player])
@@ -352,7 +358,7 @@ install_config() {
 	    # Enjoy Toutui's respect for their users' config files <|:^)
             echo -e "$merged_config" > "$user_config"
         else
-            cp config.example.toml "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
+            cp "$example_config" "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
         fi
     fi
 }
@@ -443,9 +449,9 @@ install_toutui() {
     install_deps # install essential and/or optional deps
     install_config # create ~/.config/toutui/ etc.
     install_rust # cornerstone! toutui is written by a crab
-    cargo build --release
+    cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
     # copy Toutui binary to system path
-    sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+    # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
     echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
     echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
@@ -457,11 +463,14 @@ post_update_msg() {
 }
 
 get_toutui_local_release() {
-    if ! [[ -f Cargo.toml ]]; then
-        echo "[ERROR] Cannot find \"Cargo.toml\"."
-        exit $EXIT_NO_CARGO_TOML
-    fi
-    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
+#    if ! [[ -f Cargo.toml ]]; then
+#        echo "[ERROR] Cannot find \"Cargo.toml\"."
+#        exit $EXIT_NO_CARGO_TOML
+#    fi
+#    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
+
+toutui --version | cut -d' ' -f2
+
 }
 
 get_toutui_github_release() {
@@ -487,12 +496,13 @@ pull_latest_version() {
         no)
             echo "[INFO] Ignoring latest version.";;
         yes)
-            echo "[INFO] Pulling latest version..."
-            git fetch && git pull
+           # echo "[INFO] Pulling latest version..."
+           # git fetch && git pull
             echo "[INFO] Installing latest version..."
-	    install_config
-            cargo build --release
-            sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+	        install_config
+            cargo install --force --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
+           # cargo build --release
+           # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
             echo "[OK] Latest version installed (v$version)."
             ;;
     esac
@@ -502,6 +512,8 @@ update_toutui() {
     install_deps # check for new deps
     local local_release=$(get_toutui_local_release)
     local github_release=$(get_toutui_github_release)
+    echo "[INFO] Local:  $local_release"
+    echo "[INFO] GitHub: $github_release"
     if [[ $local_release == $github_release ]]; then
         echo "[INFO] Up to date (version $local_release)."
     else

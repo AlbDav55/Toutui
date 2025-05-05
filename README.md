@@ -19,11 +19,11 @@
 
 ## ✨ Features  
 ✅ **Cross-platform** – <img src=".github/tux.png" align="top" width="24" alt="Tux (Linux)"/>  Linux and <img src=".github/apple.png" align="top" width="24" alt="Apple (macOS)"/> macOS    
-✅ **Lightweight & Fast** – A minimalist, terminal-based UI (TUI) written in Rust 🦀  
+✅ **Lightweight & Fast** – A minimalist terminal user interface (TUI) written in Rust 🦀  
 ✅ **Supports Books & Podcasts** – Enjoy both audiobooks and podcasts  
 ✅ **Sync Progress & Stats** – Keep your listening progress in sync  
 ✅ **Streaming Support** – Play directly without downloading  
-✅ **Customizable Color Theme** – A config file will allow you to customize the color theme. Explore themes [here](https://github.com/AlbanDAVID/Toutui-theme).
+✅ **Customizable Color Theme** – A config file will allow you to customize the color theme. Explore and try various themes [here](https://github.com/AlbanDAVID/Toutui-theme).
 
 ## 📰 Media
 <img src=".github/korben.png" align="top" width="50" alt="Korben"/> Featured on [Korben](https://korben.info/toutui-client-terminal-audiobookshelf.html), a well-known French tech blog covering open source and technology.
@@ -66,9 +66,10 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 
 ## 🚨 Installation Instructions
 
-### Easy installation
+### Easy installation from source
 
 >[!WARNING]
+> ❗ For now, Toutui is installed and compiled from source by cloning the stable branch, but the process is simplified thanks to the hello_toutui.sh script.
 > - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**    
 > - If you follow all the instructions but installation fails:
 >     - Check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/Installation-issues).
@@ -84,14 +85,14 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 > ```
 > Install openssl:
 >```  
-> `brew install openssl`
+> brew install openssl
 >```   
 
 **Proceed with the installation by simply copying and pasting the following code block into your terminal:**    
 
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 ```bash
-git clone https://github.com/AlbanDAVID/Toutui
+git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui
 cd Toutui/
 chmod +x hello_toutui.sh
 ./hello_toutui.sh install

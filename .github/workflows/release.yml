@@ -6,34 +6,19 @@ on:
       - stable
 
 jobs:
-  build:
-    name: Build for ${{ matrix.target }}
+  release:
+    name: release ${{ matrix.target }}
     runs-on: ubuntu-latest
-
     strategy:
+      fail-fast: false
       matrix:
-        target: [x86_64-unknown-linux-gnu, x86_64-apple-darwin]
-
+        target: [x86_64-pc-windows-gnu, x86_64-unknown-linux-musl]
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: ${{ matrix.target }}
-          override: true
-
-      - name: Build
-        run: |
-          cargo build --release --target ${{ matrix.target }}
-
-      - name: Upload artifact
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            target/${{ matrix.target }}/release/toutui
+      - uses: actions/checkout@master
+      - name: Compile and release
+        uses: rust-build/rust-build.action@v1.4.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        with:
+          RUSTTARGET: ${{ matrix.target }}
+          EXTRA_FILES: "README.md LICENSE"

@@ -399,7 +399,7 @@ impl App {
             .bold()
             .centered()
             .render(area, buf);
-        Paragraph::new(format!("👋 TEST 3 Connected as {}\n🔗 {}", &username, &server_address_pretty))
+        Paragraph::new(format!("👋 TEST 4 Connected as {}\n🔗 {}", &username, &server_address_pretty))
             .not_bold()
             .left_aligned()
             .render(area, buf);

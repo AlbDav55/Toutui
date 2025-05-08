@@ -42,5 +42,3 @@ login_foreground_color = [180, 180, 180]
 # Background color of the player:
 player_background_color = [80, 80, 80]
 
-[test]
-test = "test"

@@ -16,7 +16,6 @@ jobs:
         with:
           # (optional) Path to changelog.
           #changelog: CHANGELOG.md
-          draft: true
           # (required) GitHub token for creating GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
 

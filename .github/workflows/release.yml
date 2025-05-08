@@ -4,9 +4,8 @@ permissions:
   contents: write
 
 on:
-  push:
-    tags:
-      - v[0-9]+.*
+  release:
+    types: [created]
 
 jobs:
   create-release:
@@ -17,6 +16,7 @@ jobs:
         with:
           # (optional) Path to changelog.
           #changelog: CHANGELOG.md
+          draft: true
           # (required) GitHub token for creating GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
 

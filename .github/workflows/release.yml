@@ -50,12 +50,18 @@ jobs:
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload additional files to release
+      - name: Prepare assets
+        run: |
+          mkdir -p dist
+          cp ./config.example.toml dist/
+          cp ./linux/toutui.desktop dist/
+          cp ./target/${{ matrix.target }}/release/toutui dist/toutui-${{ matrix.target }}
+
+      - name: Create GitHub release and upload files
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            ./config.example.toml
-            ./linux/toutui.desktop
+          draft: true
+          files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  

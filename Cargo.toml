@@ -1,6 +1,6 @@
 [package]
 name = "toutui"
-version = "12.12.15-beta"
+version = "12.12.18-beta"
 edition = "2021"
 
 [dependencies]

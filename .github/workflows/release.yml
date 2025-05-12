@@ -50,12 +50,13 @@ jobs:
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload additional files
-        uses: actions/upload-artifact@v3
+      - name: Upload additional files to release
+        uses: softprops/action-gh-release@v1
         with:
-          name: additional-files
-          path: |
-            ./config.example.toml
+          files: |
+            ./config.toml
             ./linux/toutui.desktop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  
 

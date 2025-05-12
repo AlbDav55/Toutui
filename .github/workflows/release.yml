@@ -49,13 +49,5 @@ jobs:
           target: ${{ matrix.target }}
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Upload config.toml and .desktop
-        run: |
-          gh release upload "$GITHUB_REF_NAME" \
-            packaging/config.example.toml \
-            packaging/linux/toutui.desktop \
-            --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
 

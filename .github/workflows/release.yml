@@ -48,3 +48,19 @@ jobs:
           target: ${{ matrix.target }}
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: upload config.example.toml to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./main/config.example.toml
+          asset_name: config.example.toml
+          asset_content_type: application/octet-stream
+
+      - name: upload toutui.desktop to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./main/linux/toutui.desktop
+          asset_name: toutui.desktop
+          asset_content_type: application/octet-stream

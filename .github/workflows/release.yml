@@ -49,5 +49,13 @@ jobs:
           target: ${{ matrix.target }}
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload additional files
+        uses: actions/upload-artifact@v3
+        with:
+          name: additional-files
+          path: |
+            ./config.example.toml
+            ./linux/toutui.desktop
  
 
